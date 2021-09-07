@@ -17,22 +17,29 @@ monthly_challenges_list = {
     "september": "Learn Django for rest of the day when u don't have other job to do!",
     "october": "Eat meat and fat for entire month!",
     "november": "Walk for at least 20 minute every day!",
-    "december": "Learn Django for rest of the day when u don't have other job to do!",
+    "december": None,
 }
 # Create your views here.
 
 
 def index(request):
-    list_items = ""
     months = list(monthly_challenges_list.keys())
+# sending a direct list
+    return render(request, "challenges/index.html", {
+        "months": months
+    })
 
-    for month in months:
-        capitalized_month = month.capitalize()
-        month_path = reverse("monthly_changes", args=[month])
-        list_items += f"<li><a href=\"{month_path}\"> {capitalized_month}</a></li>"
+# creating a list of unordered html tag before sending it to dtl
 
-    response_data = f"<ul> {list_items}</ul>"
-    return HttpResponse(response_data)
+    # list_items = ""
+
+    # for month in months:
+    #     capitalized_month = month.capitalize()
+    #     month_path = reverse("monthly_changes", args=[month])
+    #     list_items += f"<li><a href=\"{month_path}\"> {capitalized_month}</a></li>"
+
+    # response_data = f"<ul> {list_items}</ul>"
+    # return HttpResponse(response_data)
 
 
 def monthly_challenges_by_number(requst, month):
@@ -53,10 +60,10 @@ def monthly_challenges(request, month):
             "text": challenges_text,
             "month": capitalize_month
         })
-        # response_data = render_to_string("challenges/challenge.html")
         # return HttpResponse(response_data)
     except:
-        return HttpResponseNotFound("This month is not supported!")
+        response_data = render_to_string("404.html")
+        return HttpResponseNotFound(response_data)
 
     # if month == "january":
     #     challenges_text = "Eat meat and fat for entire month!"
